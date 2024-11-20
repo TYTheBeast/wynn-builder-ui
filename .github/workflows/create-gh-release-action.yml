@@ -2,7 +2,7 @@ name: Create GitHub Releases with Artifacts and correct files
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
       - 'develop'
 
 jobs:
