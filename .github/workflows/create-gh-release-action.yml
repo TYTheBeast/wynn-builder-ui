@@ -1,8 +1,9 @@
 name: Create GitHub Releases with Artifacts and correct files
 on:
   push:
-    tags:
-      - v*.*.*
+    branches:
+      - 'main'
+      - 'develop'
 
 jobs:
   check-and-lint:
