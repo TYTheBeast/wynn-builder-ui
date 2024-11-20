@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use iced_widget::combo_box;
+use serde::{Deserialize, Serialize};
 
 #[derive(Default)]
 pub struct GearSelections {
@@ -125,4 +125,4 @@ pub enum GearType {
     Relik,
     #[default]
     None,
-} 
+}

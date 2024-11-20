@@ -4,8 +4,8 @@ use iced::{
     alignment::{Horizontal, Vertical},
     Length, Task,
 };
-use iced_widget::{column, container, text, text_editor::Action, text_input, Container};
 use iced_widget::text_editor;
+use iced_widget::{column, container, text, text_editor::Action, text_input, Container};
 
 use crate::{Message, SearchMessage};
 
@@ -68,10 +68,7 @@ impl SearchItems {
                     Path::new("search_item")
                 };
 
-                let args: Vec<&str> = self
-                    .search_input
-                    .split_whitespace()
-                    .collect();
+                let args: Vec<&str> = self.search_input.split_whitespace().collect();
 
                 let output = match std::process::Command::new(binary_path).args(args).output() {
                     Ok(output) => match output.status.success() {
@@ -87,32 +84,25 @@ impl SearchItems {
                 Action::Edit(_) => (),
                 Action::Move(_) => (),
                 Action::Select(motion) => {
-                    self.search_results
-                        .perform(Action::Select(motion));
+                    self.search_results.perform(Action::Select(motion));
                 }
                 Action::SelectWord => {
-                    self.search_results
-                        .perform(Action::SelectWord);
+                    self.search_results.perform(Action::SelectWord);
                 }
                 Action::SelectLine => {
-                    self.search_results
-                        .perform(Action::SelectLine);
+                    self.search_results.perform(Action::SelectLine);
                 }
                 Action::SelectAll => {
-                    self.search_results
-                        .perform(Action::SelectAll);
+                    self.search_results.perform(Action::SelectAll);
                 }
                 Action::Click(point) => {
-                    self.search_results
-                        .perform(Action::Click(point));
+                    self.search_results.perform(Action::Click(point));
                 }
                 Action::Drag(point) => {
-                    self.search_results
-                        .perform(Action::Drag(point));
+                    self.search_results.perform(Action::Drag(point));
                 }
                 Action::Scroll { lines } => {
-                    self.search_results
-                        .perform(Action::Scroll { lines });
+                    self.search_results.perform(Action::Scroll { lines });
                 }
             },
         }

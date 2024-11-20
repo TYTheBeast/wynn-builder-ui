@@ -1,6 +1,8 @@
 use iced::{Element, Length, Renderer, Theme};
 use iced_table::table;
-use iced_widget::{button, checkbox, container, horizontal_space, pick_list, scrollable, text, text_input};
+use iced_widget::{
+    button, checkbox, container, horizontal_space, pick_list, scrollable, text, text_input,
+};
 
 use crate::{Category, ColumnKind, DBReaderMessage, Message};
 
@@ -139,11 +141,9 @@ impl<'a> table::Column<'a, Message, Theme, Renderer> for DBColumn {
                 .on_input(move |notes| Message::DBReader(DBReaderMessage::Notes(row_index, notes)))
                 .width(Length::Fill)
                 .into(),
-            ColumnKind::Delete => {
-                button(text("Delete"))
-                    .on_press(Message::DBReader(DBReaderMessage::Delete(row_index)))
-                    .into()
-            }
+            ColumnKind::Delete => button(text("Delete"))
+                .on_press(Message::DBReader(DBReaderMessage::Delete(row_index)))
+                .into(),
         };
 
         container(content)

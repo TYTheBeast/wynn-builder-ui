@@ -1,7 +1,7 @@
 mod db_reader;
-mod view;
 mod update;
+mod view;
 
 pub use db_reader::*;
-pub use view::*;
 pub use update::*;
+pub use view::*;

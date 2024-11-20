@@ -1,10 +1,10 @@
-mod gear;
-mod config_view;
 mod config_update;
+mod config_view;
+mod gear;
 pub mod style;
 
-pub use gear::{Gear, GearList, GearSelections, GearType};
 use crate::build_config::Config;
+pub use gear::{Gear, GearList, GearSelections, GearType};
 
 #[derive(Default)]
 pub struct ConfigFile {
@@ -19,4 +19,4 @@ impl ConfigFile {
             .save_config("config/config.toml")
             .unwrap_or_default();
     }
-} 
+}

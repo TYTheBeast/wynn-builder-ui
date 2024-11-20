@@ -6,9 +6,16 @@ use iced_widget::{
     button, checkbox, column, combo_box, container, row, scrollable, text, text_input, Container,
 };
 
-use crate::{build_config::{ThresholdFirst, ThresholdSecond, ThresholdThird, ThresholdFourth, ThresholdFifth}, messages::Message, ConfigMessage, GearMessage, HppengMessage, PlayerMessage, ThresholdFifthMessage, ThresholdFirstMessage, ThresholdFourthMessage, ThresholdSecondMessage, ThresholdThirdMessage};
-use super::ConfigFile;
 use super::style::*;
+use super::ConfigFile;
+use crate::{
+    build_config::{
+        ThresholdFifth, ThresholdFirst, ThresholdFourth, ThresholdSecond, ThresholdThird,
+    },
+    messages::Message,
+    ConfigMessage, GearMessage, HppengMessage, PlayerMessage, ThresholdFifthMessage,
+    ThresholdFirstMessage, ThresholdFourthMessage, ThresholdSecondMessage, ThresholdThirdMessage,
+};
 
 impl ConfigFile {
     pub fn view(&self) -> Container<'_, Message> {
@@ -760,4 +767,4 @@ impl ConfigFile {
         .height(Length::Fill)
         .into()
     }
-} 
+}

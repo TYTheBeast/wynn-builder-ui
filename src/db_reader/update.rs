@@ -26,9 +26,7 @@ impl DBReader {
                     column.width += offset;
                 }
             }),
-            DBReaderMessage::ResizeColumnsEnabled(enabled) => {
-                self.resize_column_enabled = enabled
-            }
+            DBReaderMessage::ResizeColumnsEnabled(enabled) => self.resize_column_enabled = enabled,
             DBReaderMessage::FooterEnabled(enabled) => self.footer_enabled = enabled,
             DBReaderMessage::MinWidthEnabled(enabled) => self.min_width_enabled = enabled,
             DBReaderMessage::Theme(theme) => {

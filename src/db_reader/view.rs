@@ -44,11 +44,9 @@ impl DBReader {
                 .on_toggle(|_| Message::DBReader(DBReaderMessage::FooterEnabled(true))),
             checkbox("Min Width", self.min_width_enabled)
                 .on_toggle(|_| Message::DBReader(DBReaderMessage::MinWidthEnabled(true))),
-            pick_list(
-                Themes::to_vec(),
-                Some(self.theme.clone()),
-                |theme| Message::DBReader(DBReaderMessage::Theme(theme)),
-            ),
+            pick_list(Themes::to_vec(), Some(self.theme.clone()), |theme| {
+                Message::DBReader(DBReaderMessage::Theme(theme))
+            },),
             table
         ]
         .spacing(6);
