@@ -147,7 +147,11 @@ impl State {
 }
 
 pub fn start_binary() -> impl Stream<Item = Result<BuilderProgress, String>> {
-    let binary_path = Path::new("builder");
+    let binary_path = if cfg!(windows) {
+        Path::new("builder.exe")
+    } else {
+        Path::new("builder")
+    };
 
     try_channel(1, move |mut output| async move {
         let mut _process = tokio::process::Command::new(binary_path)

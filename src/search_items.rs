@@ -62,7 +62,11 @@ impl SearchItems {
                 self.search_input = input_text;
             }
             SearchMessage::InputSubmitted => {
-                let binary_path = Path::new("search_item");
+                let binary_path = if cfg!(windows) {
+                    Path::new("search_item.exe")
+                } else {
+                    Path::new("search_item")
+                };
 
                 let args: Vec<&str> = self
                     .search_input
