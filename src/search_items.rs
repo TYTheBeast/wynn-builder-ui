@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use iced::{
     alignment::{Horizontal, Vertical},
     Length, Task,
@@ -60,18 +62,14 @@ impl SearchItems {
                 self.search_input = input_text;
             }
             SearchMessage::InputSubmitted => {
-                let binary_name = if cfg!(windows) {
-                    "search_item.exe"
-                } else {
-                    "search_item"
-                };
+                let binary_path = Path::new("search_item");
 
                 let args: Vec<&str> = self
                     .search_input
                     .split_whitespace()
                     .collect();
 
-                let output = match std::process::Command::new(binary_name).args(args).output() {
+                let output = match std::process::Command::new(binary_path).args(args).output() {
                     Ok(output) => match output.status.success() {
                         true => String::from_utf8_lossy(&output.stdout).to_string(),
                         false => String::from_utf8_lossy(&output.stderr).to_string(),

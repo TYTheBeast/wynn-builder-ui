@@ -1,5 +1,5 @@
 #![allow(unused)]
-use std::process::Stdio;
+use std::{path::Path, process::Stdio};
 
 use futures::{SinkExt, Stream};
 use iced::{
@@ -147,14 +147,10 @@ impl State {
 }
 
 pub fn start_binary() -> impl Stream<Item = Result<BuilderProgress, String>> {
-    let binary_name = if cfg!(target_os = "windows") {
-        "builder.exe"
-    } else {
-        "builder"
-    };
+    let binary_path = Path::new("builder");
 
     try_channel(1, move |mut output| async move {
-        let mut _process = tokio::process::Command::new(binary_name)
+        let mut _process = tokio::process::Command::new(binary_path)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
