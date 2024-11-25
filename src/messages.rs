@@ -172,6 +172,7 @@ pub enum BuilderMessage {
     Communication(Result<BuilderProgress, String>),
     StartBinary,
     StopBinary,
+    SetOutputLines(i32),
 }
 
 #[derive(Debug, Clone)]

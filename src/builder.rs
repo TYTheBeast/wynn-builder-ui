@@ -7,7 +7,7 @@ use iced::{
     stream::try_channel,
     task, Element, Length, Task,
 };
-use iced_widget::{button, column, container, scrollable, text, Container};
+use iced_widget::{button, column, container, row, scrollable, slider, text, Container};
 use tokio::{
     io::{AsyncBufReadExt, BufReader},
     select,
@@ -53,8 +53,11 @@ impl Builder {
                     BuilderProgress::None => "".to_string(),
                 };
 
-                if self.state.text.len() >= 100 {
-                    self.state.text.remove(0);
+                if self.state.text.len() >= self.state.output_lines as usize {
+                    let to_remove = self.state.text.len() - self.state.output_lines as usize;
+                    if to_remove > 0 {
+                        self.state.text.drain(0..to_remove);
+                    }
                 }
 
                 self.state.text.push(new_content);
@@ -72,6 +75,10 @@ impl Builder {
                 self.state.is_running = false;
                 Task::none()
             }
+            BuilderMessage::SetOutputLines(value) => {
+                self.state.output_lines = value;
+                Task::none()
+            }
         }
     }
 
@@ -82,21 +89,39 @@ impl Builder {
         text("Beware: Running the builder binary with the output builds flag enabled will generate a lot of output and may lag or even crash the application.")
         .size(20)
         .color(WARNING),
-        if self.state.is_running {
-            Element::new(
-                button("Stop Builder")
-                    .padding(10)
-                    .on_press(Message::Builder(BuilderMessage::StopBinary)),
-            )
-        } else {
-            Element::new(
-                button("Start Builder")
-                    .padding(10)
-                    .on_press(Message::Builder(BuilderMessage::StartBinary)),
-            )
-        },
-            scrollable(column(self.state.text.iter().map(|s| text(s).into())))
-                .width(Length::Fill)
+        row![
+            if self.state.is_running {
+                Element::new(
+                    button("Stop Builder")
+                        .padding(10)
+                        .on_press(Message::Builder(BuilderMessage::StopBinary))
+                        .width(Length::Fill),
+                )
+            } else {
+                Element::new(
+                    button("Start Builder")
+                        .padding(10)
+                        .on_press(Message::Builder(BuilderMessage::StartBinary))
+                        .width(Length::Fill),
+                )
+            },
+            row![
+                text("Output lines: ").size(16)
+                    .center()
+                    .width(Length::Fill),
+                text(self.state.output_lines.to_string())
+                    .size(16)
+                    .center()
+                    .width(Length::Fill),
+                slider(10..=500, self.state.output_lines, |value| {
+                    Message::Builder(BuilderMessage::SetOutputLines(value))
+                })
+                .width(Length::FillPortion(9)),
+            ]
+        .width(Length::FillPortion(4)),
+        ],
+        scrollable(column(self.state.text.iter().map(|s| text(s).into())))
+            .width(Length::Fill)
         ]
         .padding(10)
         .spacing(10);
@@ -113,6 +138,7 @@ impl Builder {
 struct State {
     is_running: bool,
     text: Vec<String>,
+    output_lines: i32,
     _process: task::Handle,
 }
 
@@ -121,6 +147,7 @@ impl Default for State {
         Self {
             is_running: false,
             text: vec![],
+            output_lines: 200,
             _process: {
                 let (_, handle) = Task::<Result<String, String>>::none().abortable();
                 handle
